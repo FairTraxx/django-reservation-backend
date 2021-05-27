@@ -19,16 +19,6 @@ class Table(models.Model):
 
 class Booking(models.Model):
     table = models.ForeignKey(Table, on_delete=models.PROTECT)
-    people = models.IntegerField()
+    people = models.IntegerField(null=False)
     booking_date_time_start = models.DateTimeField()
     booking_date_time_end = models.DateTimeField()
-    SLOTS = (
-        (1, _('12:00PM to 3:00PM')),
-        (2, _('3:00PM to 6:00PM')),
-        (3, _('6:00PM to 9:00PM')),
-        (4, _('9:00PM to 11:59PM')),
-    )
-    time_slots = models.PositiveSmallIntegerField(
-        default=1,
-        choices=SLOTS,
-    )
