@@ -3,6 +3,7 @@ from rest_framework import viewsets, status
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.decorators import action,permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.pagination import PageNumberPagination
 from django.http import JsonResponse, HttpResponse
 from django.core import serializers as ser
 from rest_framework.response import Response
@@ -20,6 +21,7 @@ class TableView(viewsets.ModelViewSet):
     queryset = models.Table.objects.all()
     serializer_class = serializers.TableSerializer
     permission_classes = [IsAdminUser]
+    pagination_class = PageNumberPagination
 # Create your views here.
 # list() retreive() create() destroy()
 
@@ -27,8 +29,8 @@ class TableView(viewsets.ModelViewSet):
 class ReservationView(viewsets.ModelViewSet):
     queryset = models.Booking.objects.all()
     serializer_class = serializers.BookingSerializer
+    pagination_class = PageNumberPagination
     
-
     @action(detail=False, methods=["get"], url_path="checkavailable")
     @permission_classes([IsAuthenticated])
     def CheckTimeSlots(self, request):
