@@ -12,7 +12,7 @@ class Restaurant(models.Model):
 
 class Table(models.Model):
     restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT)
-    table_number = models.IntegerField(null=False)
+    table_number = models.IntegerField(null=False, unique=True)
     size = models.IntegerField(
         validators=[MaxValueValidator(12), MinValueValidator(1)])
     def __str__(self):
@@ -22,7 +22,7 @@ class Table(models.Model):
 class Booking(models.Model):
     table = models.ForeignKey(Table, on_delete=models.PROTECT)
     people = models.IntegerField(null=False)
-    booking_date_time_start = models.DateTimeField()
-    booking_date_time_end = models.DateTimeField()
+    booking_date_time_start = models.DateTimeField(unique=True)
+    booking_date_time_end = models.DateTimeField(unique=True)
     def __str__(self):
         return str(self.table)

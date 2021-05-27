@@ -1,11 +1,10 @@
 from django.shortcuts import render
 from rest_framework import viewsets, status
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
-from rest_framework.decorators import action,permission_classes
+from rest_framework.decorators import action, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.pagination import PageNumberPagination
 from django.http import JsonResponse, HttpResponse
-from django.core import serializers as ser
 from rest_framework.response import Response
 from datetime import datetime
 import json
@@ -30,7 +29,7 @@ class ReservationView(viewsets.ModelViewSet):
     queryset = models.Booking.objects.all()
     serializer_class = serializers.BookingSerializer
     pagination_class = PageNumberPagination
-    
+
     @action(detail=False, methods=["get"], url_path="checkavailable")
     @permission_classes([IsAuthenticated])
     def CheckTimeSlots(self, request):
@@ -81,11 +80,23 @@ class ReservationView(viewsets.ModelViewSet):
     @action(detail=False, methods=["get"], url_path="getreservations")
     @permission_classes([IsAuthenticated])
     def GetReservations(self, request):
-        #get all reservations
+        # get all reservations
         reservations = self.get_queryset().all()
         serializer = self.get_serializer_class()(reservations, many=True)
         return Response(serializer.data)
-    #Book a time slot
+
+    @action(detail=False, methods=['delete'], url_path="delete")
+    @permission_classes([IsAuthenticated])
+    def delete(self, request):
+        # delete a reservation
+        # count = Tutorial.objects.all().delete()
+        reservations = models.Booking.objects.filter(
+            pk=request.data['id']).delete()
+        return JsonResponse(
+                {"deleted reservation number": request.data['id']}, status=status.HTTP_204_NO_CONTENT
+            )
+    # Book a time slot
+
     @action(detail=False, methods=["post"], url_path="add")
     @permission_classes([IsAuthenticated])
     def BookSlot(self, request):
@@ -127,7 +138,7 @@ class ReservationView(viewsets.ModelViewSet):
         # Query all the reservations on the requested table and compare them with provided date
         for booking in booking_list:
             # check if the timeslot is available (this part is explained in the README)
-            if booking.booking_date_time_start <= requested_end_date or requested_start_date <= booking.booking_date_time_end:
+            if booking.booking_date_time_start <= requested_end_date and requested_start_date <= booking.booking_date_time_end:
                 return JsonResponse(
                     {"error": "Time Slot is already booked, check available timeslots first"}, status=status.HTTP_400_BAD_REQUEST
                 )
