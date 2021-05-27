@@ -15,6 +15,8 @@ class Table(models.Model):
     table_number = models.IntegerField(null=False)
     size = models.IntegerField(
         validators=[MaxValueValidator(12), MinValueValidator(1)])
+    def __str__(self):
+        return str(self.table_number)
 
 
 class Booking(models.Model):
@@ -22,3 +24,5 @@ class Booking(models.Model):
     people = models.IntegerField(null=False)
     booking_date_time_start = models.DateTimeField()
     booking_date_time_end = models.DateTimeField()
+    def __str__(self):
+        return str(self.table)
