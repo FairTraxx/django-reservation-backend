@@ -1,6 +1,6 @@
 ## Django RESTaurant API
 
-This my take for the restaurant task that was provided, the API contains User authentication with the required roles, and endpoints to perform all the required table and booking functionality.
+This is my take for the restaurant task that was provided, the API contains User authentication with the required roles, and endpoints to perform all the required table and booking functionality.
 
 However, unfortuantly due to the insufficent time frame resulting from my back 2 back midterm exams, 80% of the development was done in a single day with tons of coffee, So I did my best to cover all the core functionality and edge cases but unfortuantly didn't have time to write extensive unit tests, So I will do my best to throughly explain everything in this README.
 
