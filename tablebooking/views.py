@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from rest_framework import viewsets, status
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
-from rest_framework.decorators import action
+from rest_framework.decorators import action,permission_classes
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from django.http import JsonResponse, HttpResponse
 from django.core import serializers as ser
 from rest_framework.response import Response
@@ -18,6 +19,7 @@ utc = pytz.UTC
 class TableView(viewsets.ModelViewSet):
     queryset = models.Table.objects.all()
     serializer_class = serializers.TableSerializer
+    permission_classes = [IsAdminUser]
 # Create your views here.
 # list() retreive() create() destroy()
 
@@ -25,8 +27,10 @@ class TableView(viewsets.ModelViewSet):
 class ReservationView(viewsets.ModelViewSet):
     queryset = models.Booking.objects.all()
     serializer_class = serializers.BookingSerializer
+    
 
     @action(detail=False, methods=["get"], url_path="checkavailable")
+    @permission_classes([IsAuthenticated])
     def CheckTimeSlots(self, request):
         # catch if people pass 12 person
         if request.data['people'] > 12:
@@ -73,6 +77,7 @@ class ReservationView(viewsets.ModelViewSet):
         return Response(json_res)
 
     @action(detail=False, methods=["get"], url_path="getreservations")
+    @permission_classes([IsAuthenticated])
     def GetReservations(self, request):
         #get all reservations
         reservations = self.get_queryset().all()
@@ -80,6 +85,7 @@ class ReservationView(viewsets.ModelViewSet):
         return Response(serializer.data)
     #Book a time slot
     @action(detail=False, methods=["post"], url_path="add")
+    @permission_classes([IsAuthenticated])
     def BookSlot(self, request):
         # query all reservations on the requested table
         booking_list = models.Booking.objects.filter(

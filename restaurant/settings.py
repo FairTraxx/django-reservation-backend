@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'tablebooking',
     'users',
 
-    #Plugins used are 
+    # Plugins used are
     'rest_framework',
     'rest_framework_simplejwt'
 
@@ -135,6 +135,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'users.NewUser'
 
 REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
