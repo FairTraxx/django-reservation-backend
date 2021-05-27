@@ -24,15 +24,15 @@ _                        |---- DateRange A ------|
 ```
  This translates to `(StartDateA <= EndDateB) and (EndDateA >= StartDateB)` if this condition is satisfied then the dates overlap and we can't book that time slot, an expection is thrown. If not then we book the time slot.
 
- ### the get available time slots algorithm
+ ### Get available time slots algorithm
 
  Now here is where things get a bit messy :D
 
- - Given only the number of people we check if that number is within our range of maximum seats (1-12 seats)
+ - Given only the number of people, we first check/catch if that number is within our range of maximum seats (1-12 seats)
 
  - We then query the tables with `people <= Table Seats` then we query all the reservations on those tables
 
- - We then iterate over all the reservations comparing the current date/time with the reserved date/time
+ - We then iterate over all the reservations on those tables comparing the current date/time with the reserved date/time
 
  - if `currenttime < booking_start` we calculate a time slot starting from now up until the table starts to get reserved, then calculate another timeslot after the reservation ends up until a next reservation comes or we reach the end of working hours.
 
