@@ -1,4 +1,4 @@
-## Django RESTtaurant API
+## Django RESTaurant API
 
 This my take for the restaurant task that was provided, the API contains User authentication with the required roles, and endpoints to perform all the required table and booking functionality.
 
@@ -54,5 +54,5 @@ _                        |---- DateRange A ------|
 
 - start the server with `python manage.py runserver`
 
-The database is connected to a postgres server running online, but a sqlite db is also included for quick access
+The database is connected to a postgres server running online, but a sqlite db is also included for quick access with some dummy data.
 
